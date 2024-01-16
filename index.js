@@ -30,11 +30,14 @@ app.post("/tasks", async (req, res) => {
 
 app.patch("/tasks/:id", async (req, res) => {
     try {
-        const taskId = await TaskModel.findById(req.params.id);
-        if (!taskId) {
-            return res.status(404).send("Task not found");
+        const allowedUpdates = ["isCompleted"];
+        const updates = Object.keys(req.body);
+        const isValidOperation = updates.every((update) =>
+            allowedUpdates.includes(update)
+        );
+        if (!isValidOperation) {
+            return res.status(400).send({ error: "Invalid updates!" });
         }
-
         const task = await TaskModel.findByIdAndUpdate(
             req.params.id,
             req.body,
