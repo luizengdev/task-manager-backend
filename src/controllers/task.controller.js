@@ -1,4 +1,5 @@
 import TaskModel from "../models/task.model.js";
+import { notFoundError } from "../errors/mongodb.errors.js";
 
 class TaskController {
     constructor(req, res) {
@@ -19,7 +20,7 @@ class TaskController {
         try {
             const task = await TaskModel.findById(this.req.params.id);
             if (!task) {
-                this.res.status(404).send("Task not found");
+                return notFoundError(this.res);
             }
             this.res.status(200).send(task);
         } catch (error) {
@@ -53,6 +54,11 @@ class TaskController {
                     new: true,
                 }
             );
+
+            if (!task) {
+                return notFoundError(this.res);
+            }
+
             this.res.status(200).send(task);
         } catch (error) {
             this.res.status(500).send(error.message);
@@ -63,7 +69,7 @@ class TaskController {
         try {
             const taskId = await TaskModel.findById(this.req.params.id);
             if (!taskId) {
-                return this.res.status(404).send("Task not found");
+                return notFoundError(this.res);
             }
 
             const task = await TaskModel.findByIdAndDelete(this.req.params.id);
