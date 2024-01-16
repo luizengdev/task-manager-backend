@@ -28,6 +28,26 @@ app.post("/tasks", async (req, res) => {
     res.status(201).send(task);
 });
 
+app.patch("/tasks/:id", async (req, res) => {
+    try {
+        const taskId = await TaskModel.findById(req.params.id);
+        if (!taskId) {
+            return res.status(404).send("Task not found");
+        }
+
+        const task = await TaskModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+            }
+        );
+        res.status(200).send(task);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 app.delete("/tasks/:id", async (req, res) => {
     const taskId = await TaskModel.findById(req.params.id);
     if (!taskId) {
