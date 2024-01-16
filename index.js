@@ -15,6 +15,14 @@ app.get("/tasks", async (req, res) => {
     res.status(200).send(tasks);
 });
 
+app.get("/tasks/:id", async (req, res) => {
+    const task = await TaskModel.findById(req.params.id);
+    if (!task) {
+        return res.status(404).send("Task not found");
+    }
+    res.status(200).send(task);
+});
+
 app.post("/tasks", async (req, res) => {
     const task = await TaskModel.create(req.body);
     res.status(201).send(task);
