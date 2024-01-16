@@ -20,6 +20,16 @@ app.post("/tasks", async (req, res) => {
     res.status(201).send(task);
 });
 
+app.delete("/tasks/:id", async (req, res) => {
+    const taskId = await TaskModel.findById(req.params.id);
+    if (!taskId) {
+        return res.status(404).send("Task not found");
+    }
+
+    const task = await TaskModel.findByIdAndDelete(req.params.id);
+    res.status(200).send(task);
+});
+
 app.listen(process.env.PORT, () =>
     console.log(`Listening on port ${process.env.PORT}!`)
 );
