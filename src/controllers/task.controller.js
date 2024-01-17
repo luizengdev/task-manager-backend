@@ -1,5 +1,6 @@
 import TaskModel from "../models/task.model.js";
 import { notFoundError } from "../errors/mongodb.errors.js";
+import { notAllowedFieldsToUpdateError } from "../errors/general.errors.js";
 
 class TaskController {
     constructor(req, res) {
@@ -45,7 +46,7 @@ class TaskController {
                 allowedUpdates.includes(update)
             );
             if (!isValidOperation) {
-                return this.res.status(400).send({ error: "Invalid updates!" });
+                return notAllowedFieldsToUpdateError(this.res);
             }
             const task = await TaskModel.findByIdAndUpdate(
                 this.req.params.id,
