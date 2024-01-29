@@ -16,7 +16,7 @@ app.use(
         preflightContinue: false,
         optionsSuccessStatus: 204,
         credentials: true,
-        allowedHeaders: ["Content-Type", "Authorization"],
+        accessControlAllowHeaders: ["Content-Type", "Authorization"],
     })
 );
 
