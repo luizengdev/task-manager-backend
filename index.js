@@ -9,17 +9,18 @@ dotenv.config();
 
 const app = express();
 
-app.use(
-    cors({
-        origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false,
-        optionsSuccessStatus: 204,
-        credentials: true,
-        accessControlAllowOrigin: "*",
-        accessControlAllowHeaders: ["Content-Type", "Authorization"],
-    })
-);
+// app.use(cors());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5173"); // Substitua pela origem do seu frontend
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+    // Permitir que o navegador envie cookies com a solicitação
+    res.header("Access-Control-Allow-Credentials", true);
+
+    // Continue para as rotas
+    next();
+});
 
 app.use(express.json());
 
