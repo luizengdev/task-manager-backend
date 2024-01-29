@@ -5,7 +5,7 @@ const TaskSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // isComplered sinalisa se a tarefa foi cpmpletada ou não
+
     isCompleted: {
         type: Boolean,
         default: false,
